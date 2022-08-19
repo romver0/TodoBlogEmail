@@ -1,0 +1,33 @@
+{#{% extends 'todo/base.html' %}#}
+{##}
+{#{% block content %}#}
+{#    {% if user.is_authenticated  %}#}
+{#        Loagged in as {{ user.username }}#}
+{#        <a href='{% url 'logout' %}'>Выйти</a> {# get-запрос инциируется по отпределённому адресу  #}
+{#    {% else %}#}
+{#        <a href='#'>Регистрация</a>#}
+{#        <a href='#'>Войти</a>#}
+{#    {% endif %}#}
+{#{% endblock %}#}
+
+<style>
+    #home{
+        color: green;
+    }
+</style>
+{% extends 'todo/base.html' %}
+
+{% block content %}
+    <span id="home">Home</span>
+    <br>
+    {% if user.is_authenticated  %}
+        <span>Хоть ты и зарегался,всё-равно чекни
+            <a href="https://github.com/romver0" target="_blank">Другие мои работы</a>
+        </span>
+    {% else %}
+        <span>Зайди,тебе понравиться
+            <a href="https://github.com/romver0" target="_blank">Другие мои работы</a>
+        </span>
+    {% endif %}
+{% endblock %}
+

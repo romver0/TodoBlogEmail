@@ -1,0 +1,52 @@
+{% extends 'todo/base.html'%}
+
+{% block content %}
+<h1>Мой профиль</h1>
+    {% if user.is_authenticated  %}
+                <h3 class="user">Никнейм: <span id="profile">{{ user.username }}</span></h3>
+            {% if user.email %}
+                <span>{% if user.is_staff %}(Ого,сам админ зашёл.Знай,ты крут){% endif %}</span>
+                <h3 class="email">Емайл: <span id="profile">{{ user.email }}</span></h3>
+            {% endif %}
+{#            {% if user.profession %}#}
+{#                <h3 class="profession">Профессия: <span id="profile">{{ user.profession }}</span></h3>#}
+{#            {% endif %}#}
+        <h3 class="time">Дата регистрации: <span id="profile">{{ user.date_joined }}</span></h3>
+    {% endif %}
+    <h3 class="dop user">Доп информация</h3>
+    {% for user in info %}
+        {% if  user.сity  %}
+        <li>Мой город: {{ user.сity }}</li>
+        {% endif %}
+        {% if  user.social_network  %}
+        <li><a href="{{ user.social_network }}" target="_blank">Мой сайт</a></li>
+        {% endif %}
+        {% if user.phonenumber %}
+        <li>Мой телефон: {{ user.phonenumber }}</li>
+        {% else %}
+            <li>Мой телефон:не введено</li>
+        {% endif %}
+    {% endfor %}
+    <div class="row justify-content-center my-3">
+        <div class="col-5" data-tooltip="Твоя аватарка">
+            <img class="img-fluid" src="https://avatarko.ru/img/kartinka/20/kosmonavt_19830.jpg" alt="Roman" date-toggle="tooltip" >
+        </div>
+    </div>
+    <hr>
+
+{#    <h3 class="todos">Важные/Срочные тудушки:</h3>#}
+{#    <div class="row justify-content-center my-3">#}
+{#        <div class="col-5" data-tooltip="Твоя аватарка">#}
+{#            {% for todo in todos %}#}
+{#                {% if todo.is_important %}#}
+{#                    {{ todo }}#}
+{#                {% endif %}#}
+{#            {% endfor %}#}
+{#        </div>#}
+{#    </div>#}
+{% endblock %}
+
+{#{% block content2 %}#}
+{#<h3>Я нахожусь вне</h3>#}
+{#{% endblock %}#}
+

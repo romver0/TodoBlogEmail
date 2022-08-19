@@ -1,0 +1,27 @@
+{% extends 'todo/base.html' %}
+
+{% block content %}
+    <style>
+    .game {
+        position:relative;
+        padding: 0 0 56.25% 0;
+        height:0;
+        overflow:hidden;
+    }
+    .game iframe{
+        position:absolute;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+    }
+    </style>
+тут должна быть игруха
+    <div class="game">
+        <iframe src="https://romver0.github.io/AimGame/" height="900" width="900"></iframe>
+    </div>
+{#<iframe src="https://romver0.github.io/AimGame/" onload="this.style.height=0;this.style.height=this.contentWindow.document.body.scrollHeight + 'px';">#}
+
+</iframe>
+{% endblock %}
+

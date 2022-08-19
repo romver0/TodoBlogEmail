@@ -1,0 +1,16 @@
+{% extends 'todo/base.html' %}
+
+{% block content %}
+    <style>
+        hr{
+            color: #5f2de2;
+            margin-top: 21px;
+            padding: 0;
+            border: none;
+            {#background: linear-gradient(45deg, #333, #ddd);#}
+            background: linear-gradient(4deg, #5462c3, #ba872c);
+        }
+    </style>
+    Тема: {{ blog.title }}<br><hr>
+    {{ blog.description }}
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'todo/base.html' %}
+
+{% block content %}
+    <style>
+    #change{
+        width: 100%;
+    }
+    </style>
+    {%  if todos.count %}
+        <div class="accordion" id="accordionExample">
+            {% for todo in todos %}
+{#                {{ todo }}#}
+                <br>
+                {% if todo.datecompleted %}
+                <form method="post" action="{% url 'deletetodo' todo.id %}">
+                    {% csrf_token %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ todo.title }}(выполнено) <button>удалить</button>
+                    </div>
+                </form>
+
+{#                    <form method="post" action="{% url 'deletetodo' todo.id %}">#}
+{#                        {% csrf_token %}#}
+{#                    <button type="submit">Удалить</button>#}
+{#                    </form>#}
+                {% else %}
+                    <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ todo.id }}" aria-expanded="true" aria-controls="collapse{{ todo.id }}">
+                        {{ todo.title }} <a href="{% url 'viewtodo' todo.id %}"><button type="button" class="btn btn-success" id="change">изменить</button></a>
+                      </button>
+                    </h2>
+                    <div id="collapse{{ todo.id }}" class="accordion-collapse collapse"  data-bs-parent="#accordionExample">
+                      <div class="accordion-body">
+                          {% if todo.description %}
+                            <span>{{ todo.description }}</span>
+                          {% else %}
+                            <span>...</span>
+                          {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% else %}
+        У тебя нет тудушек
+    {% endif %}
+{% endblock %}

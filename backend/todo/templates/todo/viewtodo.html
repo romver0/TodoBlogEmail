@@ -1,0 +1,25 @@
+{% extends 'todo/base.html' %}
+{% block content %}
+
+    <h1>Изменение Todo</h1>
+    {% if err %}
+        <div class="alert alert-danger" role="alert">
+            {{ err }}
+        </div>
+    {% endif %}
+        <form method="post">
+            {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Сохранить</button>
+        </form>
+
+        <form method="post" action="{% url 'completetodo' todo.id %}">
+            {% csrf_token %}
+        <button type="submit">Выполнено</button>
+        </form>
+
+        <form method="post" action="{% url 'deletetodo' todo.id %}">
+            {% csrf_token %}
+        <button type="submit">Удалить</button>
+        </form>
+{% endblock %}

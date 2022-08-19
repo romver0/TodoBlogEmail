@@ -1,0 +1,55 @@
+{#<form method="post" action="{% url 'currenttodos' %}"> {# + action-отправить на заданный адрес #}
+{#        {% csrf_token %}#}
+{#        {{ form}}#}
+{#        <button type="submit" >Вход</button>#}
+{#</form>#}
+
+{% extends 'todo/base.html'%}
+
+{% block content %}
+{#    <h1>Логин</h1>#}
+{#    <h2>{{ err }}</h2>#}
+{#    <form method="post" aсtion="{% url 'currenttodos' %}" > {# + action-отправить на заданный адрес#}
+{#         Метод post предлагает информацию на конкретный адрес,но#}
+{#         при оставляет её скрытой от основного адреса запроса,разделяя её на несколько частей#}
+{#         get - отображается в адресной строке;использвуеься для отображения инф-ии и чтении данных и не привязан к бд#}
+{#        {% csrf_token %}#}
+{#        {{ form.as_p }}#}
+{#        <button type="submit" >логин</button>#}
+{#    </form>#}
+
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-5 text-center">
+            <h2>Вход</h2>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-5">
+      <div class="col-md-5">
+          {% if err %}
+              <div class="alert alert-danger" role="alert">
+                {{ err }}
+              </div>
+          {% endif %}
+        <form method="post">
+            {% csrf_token %}
+          <div class="form-group">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username" name="username">
+          </div>
+          <div class="form-group">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password">
+          </div>
+            <button type="submit" class="btn btn-primary mx-auto" id="login" >войти</button>
+        </form>
+      <hr>
+      {% if err %}
+          <div class="text-center">
+              Вы точно зарегались?
+              <a href="{% url 'register' %}">Регистрация</a>
+          </div>
+      {% endif %}
+      </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'todo/base.html' %}
+
+{% block content %}
+    <style>
+    a{
+        text-decoration: none;
+    }
+    #new{
+        color: red;
+        cursor:default;
+    }
+    a:hover{
+        color:orange;
+    }
+    </style>
+    {% for blog in blogs  %}
+{#        <span>{{ blog}}</span>#}
+{#        <span>{{ blog.description}}</span>#}
+        {% if blog.date >= date %}
+            <a href="{% url 'blog:detail' blog.id %}" class="nav-link disabled">
+                <span id="new">{{ blog }} (скоро выйдет)</span>
+            </a>
+{#        <span>{{ blog.date | date:'d.m.Y'}}</span>#}
+{#  до: 16 августа 2022 г. 22:19/   #}
+        {% else %}
+            <a href="{% url 'blog:detail' blog.id %}" class="nav-link">
+                <span >{{ blog }}</span>
+            </a>
+        {% endif %}
+
+        <br><br>
+    {% endfor %}
+{% endblock %}

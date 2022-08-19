@@ -1,0 +1,78 @@
+{% extends 'todo/base.html'%}
+
+{% block content %}
+{#    <h1>Sign up</h1>#}
+{#    <h2>{{ err }}</h2>#}
+{#    <form method="post"> {# + action-отправить на заданный адрес #}
+        {# Метод post предлагает информацию на конкретный адрес,но #}
+        {# при оставляет её скрытой от основного адреса запроса,разделяя её на несколько частей  #}
+        {# get - отображается в адресной строке;использвуеься для отображения инф-ии и чтении данных и не привязан к бд #}
+{#        {% csrf_token %}#}
+{#        {{ form.as_p }}#}
+{#        <button type="submit" >Регистрация</button>#}
+{#    </form>#}
+
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-5 text-center">
+            <h2>Регистрация</h2>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-5">
+      <div class="col-md-5">
+          {% if err %}
+              <div class="alert alert-danger" role="alert">
+                {{ err }}
+              </div>
+{#              <div class="alert alert-danger" role="alert">#}
+{#                {% if nameLen < 7%}{{ err2 }}{% endif %}#}
+{#              </div>#}
+          {% endif %}
+
+        {% if email %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+          <div class="form-group">
+            <label class="sr-only" for="inlineFormInputGroup">Email</label>
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">@</div>
+                </div>
+                <input type="email" class="form-control" id="inlineFormInputGroup" placeholder="example@mail.ru" name="email">
+              </div>
+          </div>
+{#          <div class="form-group">#}
+{#           <select class="custom-select custom-select-lg mb-3" id="profession" name="profession">#}
+{#              <option value="не работаю">Какая твоя профессия</option>#}
+{#              <option value="айтишник">айтишка</option>#}
+{#              <option value="учитель">учитель</option>#}
+{#              <option value="строитель">строитель</option>#}
+{#           </select>#}
+{#          </div>#}
+          <div class="form-group">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username" name="username">
+          </div>
+          <div class="form-group">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="id_password1" name="password1">
+          </div>
+          <div class="form-group">
+            <label for="password" class="form-label">Repeat password</label>
+            <input type="password" class="form-control" id="id_password2" name="password2">
+          </div>
+            <button type="submit" class="btn btn-primary mx-auto" id="login" >Регистрация</button>
+        </form>
+      <hr>
+      {% if err %}
+          <div class="text-center">
+              Чё,забыл,ты уже регался.Кстати,мой
+              <a href="https://github.com/romver0" target="_blank"> GitHub</a>
+          </div>
+      {% endif %}
+      </div>
+    </div>
+{% endblock %}
