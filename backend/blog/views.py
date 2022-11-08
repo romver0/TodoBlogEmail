@@ -4,7 +4,6 @@ from django.utils import timezone
 
 
 def all_blogs(request):
-    test = Blog.objects.all()
     blog = Blog.objects.order_by('-date')
     context = {
         'blogs': blog,
@@ -16,6 +15,6 @@ def all_blogs(request):
 def detail(request, blog_id):
     blog = get_object_or_404(Blog, pk=blog_id)
     context = {
-        'blog':blog
+        'blog': blog
     }
     return render(request, 'detail.html', context=context)

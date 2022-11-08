@@ -2,3 +2,11 @@ Django~=3.2.12
 pip~=21.1.2
 environs~=9.5.0
 django-phonenumber-field[phonenumbers]
+django-cors-headers~=3.13.0
+djangorestframework~=3.14.0
+psycopg2
+
+requests
+aiogram
+asyncpg
+aiohttp

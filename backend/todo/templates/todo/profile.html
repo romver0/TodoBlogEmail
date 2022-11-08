@@ -33,6 +33,9 @@
         </div>
     </div>
     <hr>
+    {% if todos %}
+        <h3 class="dop user" style="color: red">У тебя много дел, а именно: {{todos.count}}</h3>
+    {% endif %}
 
 {#    <h3 class="todos">Важные/Срочные тудушки:</h3>#}
 {#    <div class="row justify-content-center my-3">#}

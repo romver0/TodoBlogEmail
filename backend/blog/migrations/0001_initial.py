@@ -5,7 +5,6 @@ import django.utils.timezone
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -17,8 +16,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=200, verbose_name='Тема')),
-                ('description', models.TextField(verbose_name='Описание')),
-                ('date', models.DateTimeField(blank=True, default=django.utils.timezone.now, null=True, verbose_name='Дата выхода поста')),
+                ('description', models.TextField(blank=True, verbose_name='Описание')),
+                ('date', models.DateTimeField(default=django.utils.timezone.now, verbose_name='Дата выхода поста')),
             ],
         ),
     ]

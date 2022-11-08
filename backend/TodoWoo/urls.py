@@ -1,6 +1,14 @@
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework import routers
+from blog.api.views import BlogViewSet
+from todo.api.views import TodoViewSet, UserViewSet
 from todo import views
+
+router = routers.DefaultRouter()
+router.register(r'blog', BlogViewSet)
+router.register(r'todo', TodoViewSet)
+router.register(r'user', UserViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -21,7 +29,11 @@ urlpatterns = [
     path('current/', views.currenttodos, name='currenttodos'),
     path('create/', views.createtodo, name='addTodo'),
     path('info/', views.infoviews, name='info'),
-    path('game/', views.gameviews, name='game')
+    path('game/', views.gameviews, name='game'),
+
+    # api
+    path('api/', include(router.urls)),
+    path('', include('user.urls'))
 ]
 
 handler404 = 'todo.views.handler_not_found'

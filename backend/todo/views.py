@@ -1,56 +1,8 @@
-# from django.http import HttpResponse
-# from django.shortcuts import render
-# from django.contrib.auth import authenticate, login
-# from .forms import *
-#
-#
-# def user_login(request):
-#     if request.method == 'POST':
-#         form = LoginForm(request.POST)
-#         if form.is_valid():
-#             cd = form.cleaned_data
-#             user = authenticate(username=cd['username'], password=cd['password'])
-#             if user is not None:
-#                 if user.is_activate:
-#                     login(request, user)
-#                     return HttpResponse('Аутентификация прошла успешно!')
-#                 else:
-#                     return HttpResponse('Отключённый аккаунт')
-#             else:
-#                 return HttpResponse('Инвалидный логин')
-#     else:
-#         form = LoginForm()
-#     return render(request, 'account/login.html',{'from':form})
-#
-#
-# def register(request):
-#     if request.method == 'POST':
-#         user_form = UserRegistrationForm(request.POST)
-#         if user_form.is_valid():
-#             # Create a new user object but avoid saving it yet
-#             new_user = user_form.save(commit=False)
-#             # Set the chosen password
-#             new_user.set_password(user_form.cleaned_data['password'])
-#             # Save the User object
-#             new_user.save()
-#             # print('is_valid = ',user_form.is_valid())
-#             return render(request, 'account/register_done.html', {'new_user': new_user})
-#     else:
-#         user_form = UserRegistrationForm()
-#     return render(request, 'account/register.html', {'user_form': user_form})
-
-
-'https://pocoz.gitbooks.io/django-v-primerah/content/glava-4-sozdanie-social-website/registratsiya-polzovatelei-i-profili-polzovatelei/registratsiya-polzovatelei.html'
 from datetime import timezone, datetime
 from smtplib import SMTPRecipientsRefused, SMTPDataError
-
 from django.conf import settings
 from django.core.mail import send_mail
 from django.core.mail import BadHeaderError
-
-'https://docs.djangoproject.com/en/4.1/topics/auth/'
-'https://docs.djangoproject.com/en/4.1/ref/contrib/auth/'
-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm  # Встроенные формы
 from todo.forms import *  # свои формы
@@ -84,7 +36,6 @@ def signupuser(request):
                     date_joined=datetime.now(),
                     password=request.POST['password1'],
                     email=request.POST['email'],
-                    # profession=request.POST['profession'],
                 )
                 try:
                     if user.email:
@@ -170,14 +121,15 @@ def loginuser(request):
 
 
 def currenttodos(request):
-    # todos=Todo.objects.all() #доступны все объекты
-    # todos=Todo.objects.filter(user=request.user,datecompleted__isnull=True) #datecompleted__isnull=True => не может быть пустым==True
     todos = Todo.objects.filter(user=request.user)
     info = InfoUser.objects.filter(user=request.user)
     if len(info) > 1:
         print(info[0].delete())
     # info=info[len(info)-1]
     # print(info)
+    print(f'request.user = {request.user}')
+    request.session['count'] = todos.count()
+    request.session['count_important'] = Todo.objects.filter(user=request.user, is_important=True).count()
     context = {
         'todos': todos,
         'info': info,
@@ -187,14 +139,9 @@ def currenttodos(request):
 
 def isImportantViews(request):
     todos = Todo.objects.filter(user=request.user)
-    count = 0
-    for todo in todos:
-        if todo.is_important:
-            count += 1
-
+    request.session['count_important'] = Todo.objects.filter(user=request.user, is_important=True).count()
     context = {
         'todos': todos,
-        'count': count
     }
     return render(request, 'todo/isImportant.html', context=context)
 
@@ -213,9 +160,9 @@ def createtodo(request):
         try:
             form = TodoForm(request.POST)
             new_todo = form.save(commit=False)  # сохраняет все данные в БД
-            print('request.user = ', request.user)
             new_todo.user = request.user
             new_todo.save()
+            # request.session['count'] = Todo.objects.filter(user=request.user)
             return redirect('todos')
         except ValueError:
             context = {
@@ -233,7 +180,6 @@ def viewtodo(request, todo_id):
             'todo': todo,
             'form': form,
         }
-        print(todo)
         return render(request, 'todo/viewtodo.html', context=context)
     else:
         try:
@@ -261,23 +207,20 @@ def completetodo(request, todo_id):
 def deletetodo(request, todo_id):
     todo = get_object_or_404(Todo, pk=todo_id)
     if request.method == 'POST':
-        try:
-            print('Удалено')
-            todo.delete()
-            # todo.save()
-        except:
-            print('не удалено')
+        todo.delete()
     return redirect('todos')
 
 
 def showTodo(request):
     todos = Todo.objects.filter(user=request.user)
     form = TodoForm()
+    request.session['count'] = todos.count()
+    request.session['count_important'] = Todo.objects.filter(user=request.user, is_important=True).count()
+
     context = {
         'todos': todos,
         'form': form
     }
-    print('todos = ', todos)
     return render(request, 'todo/todos.html', context=context)
 
 
@@ -290,7 +233,6 @@ def infoviews(request):
     else:
         try:
             form = InfoForm(request.POST)
-            print('InfoForm/requst.POST =  ', request.POST)
             new_info = form.save(commit=False)
             new_info.user = request.user
             new_info.save()
