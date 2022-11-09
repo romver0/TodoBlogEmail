@@ -36,32 +36,14 @@ def signup_user(request: HttpRequest):
                         send_mail('Регистрация', 'Вы успешно зарегались!!!', settings.EMAIL_HOST_USER, [user.email])
                     user.save()  # сохранения пользователя в бд
                     login(request, user)  # вход в свой профиль
-                except BadHeaderError:
-                    context = {
-                        'email': user.email,
-                        'error': 'Неверный/Не проверенный email'
-                    }
-                    return render(request, 'todo/signupuser.html', context=context)
-                except SMTPRecipientsRefused:
-                    context = {
-                        'email': user.email,
-                        'error': 'Неверный/Не проверенный email'
-                    }
-                    return render(request, 'todo/signupuser.html', context=context)
-                except SMTPDataError:
+                except (BadHeaderError, SMTPRecipientsRefused, SMTPDataError) as error:
                     context = {
                         'email': user.email,
                         'error': 'Неверный/Не проверенный email'
                     }
                     return render(request, 'todo/signupuser.html', context=context)
                 return redirect('profile')
-            except IntegrityError:
-                context = {
-                    'form': UserCreationForm(),
-                    'err': 'Имя пользователя уже используется',
-                }
-                return render(request, 'todo/signupuser.html', context)
-            except ValueError:
+            except (IntegrityError, ValueError) as error:
                 context = {
                     'form': UserCreationForm(),
                     'err': 'Имя пользователя уже используется',

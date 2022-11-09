@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import viewsets, permissions
-from todo.serializer import TodoSerializer, UserSerializer
+from todo.api.serializer import TodoSerializer, UserSerializer
 from todo.models import Todo
 
 
