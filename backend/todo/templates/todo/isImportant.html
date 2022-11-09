@@ -12,7 +12,7 @@
             <br>
             {% if todo.is_important %}
                 {% if todo.done %}
-                    <form method="post" action="{% url 'deletetodo' todo.id %}">
+                    <form method="post" action="{% url 'delete_todo' todo.id %}">
                         {% csrf_token %}
                         <div class="alert alert-danger" role="alert">
                             {{ todo.title }}(выполнено) <button>удалить</button>
@@ -23,7 +23,7 @@
                     <h2 class="accordion-header" >
                       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ todo.id }}" aria-expanded="true" aria-controls="collapse{{ todo.id }}">
                         {{ todo.title }}
-                          <a href="{% url 'viewtodo' todo.id %}">
+                          <a href="{% url 'view_todo' todo.id %}">
                       <button type="button" class="btn btn-success" id="change">изменить</button>
                   </a>
                       </button>

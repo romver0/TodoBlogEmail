@@ -7,5 +7,4 @@ class BlogViewSet(viewsets.ModelViewSet):
     blogs = Blog.objects.order_by('-date')
     queryset = Blog.objects.order_by('-date')
     serializer_class = BlogSerializer
-    # permission_classes = [permissions.IsAuthenticated]
-    # permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAdminUser]

@@ -12,13 +12,7 @@
         {{ form.as_p }}
         <button type="submit">Сохранить</button>
         </form>
-
-<!--        <form method="post" action="{% url 'completetodo' todo.id %}">-->
-<!--            {% csrf_token %}-->
-<!--        <button type="submit">Выполнено</button>-->
-<!--        </form>-->
-
-        <form method="post" action="{% url 'deletetodo' todo.id %}">
+        <form method="post" action="{% url 'delete_todo' todo.id %}">
             {% csrf_token %}
         <button type="submit">Удалить</button>
         </form>

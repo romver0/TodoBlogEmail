@@ -1,9 +1,8 @@
+import os
+from environs import Env
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-import os
-from environs import Env
 
 env = Env()
 env.read_env()
@@ -14,14 +13,13 @@ EMAIL_HOST = 'smtp.mail.ru'
 EMAIL_PORT = 2525
 EMAIL_HOST_USER = str(os.getenv('EMAIL_HOST_USER'))
 EMAIL_HOST_PASSWORD = str(os.getenv('EMAIL_HOST_PASSWORD'))
-print(f'EMAIL_HOST_USER = {EMAIL_HOST_USER} EMAIL_HOST_PASSWORD={EMAIL_HOST_PASSWORD} SECRET_KEY={SECRET_KEY}')
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['.localhost', '127.0.0.1']
 
@@ -33,7 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Добавлено для корректный работы приложений
+    # Добавлено для корректной работы приложений
     'phonenumber_field',
     'corsheaders',
     'rest_framework',
@@ -58,7 +56,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-ROOT_URLCONF = 'TodoWoo.urls'
+ROOT_URLCONF = 'todo_woo.urls'
 
 TEMPLATES = [
     {
@@ -76,7 +74,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'TodoWoo.wsgi.application'
+WSGI_APPLICATION = 'todo_woo.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -114,9 +112,6 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
 REST_FRAMEWORK = {
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #         'rest_framework.permissions.IsAuthenticated',
-    #     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',  # добавлено вручную
     ]
@@ -125,17 +120,16 @@ REST_FRAMEWORK = {
 USE_TZ = True
 LANGUAGE_CODE = 'ru-ru'
 TIME_ZONE = 'Europe/Moscow'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = []
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

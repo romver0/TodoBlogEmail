@@ -24,5 +24,5 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         model = User
         fields = '__all__'
 
-    def get_id(self,obj):
+    def get_id(self, obj):
         return obj.pk

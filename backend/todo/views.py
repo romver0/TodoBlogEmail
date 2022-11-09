@@ -1,34 +1,28 @@
-from datetime import timezone, datetime
-from smtplib import SMTPRecipientsRefused, SMTPDataError
 from django.conf import settings
 from django.core.mail import send_mail
 from django.core.mail import BadHeaderError
+from django.http import HttpRequest
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm  # Встроенные формы
-from todo.forms import *  # свои формы
-from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.contrib.auth import login, logout, authenticate
+from datetime import timezone, datetime
+from smtplib import SMTPRecipientsRefused, SMTPDataError
+from todo.forms import *  # свои формы
 
 
-# def proverka(text):
-#     lower = set('абвгдеёжзийклмнопрстуфхцчшщъыьэюя')
-#     return lower.intersection(text.lower()) != set()
-
-def home(request):
+def home(request: HttpRequest):
     return render(request, 'todo/home.html')
 
 
-def signupuser(request):
+def signup_user(request: HttpRequest):
     if request.method == 'GET':
         context = {
             'form': UserCreationForm()
         }
         return render(request, 'todo/signupuser.html', context)
     else:
-        print('request.POST = ', request.POST)
-        # Create a new user
-        if (request.POST['password1'] == request.POST['password2']):
+        if request.POST['password1'] == request.POST['password2']:
             try:
                 user = User.objects.create_user(
                     username=request.POST['username'],
@@ -54,23 +48,17 @@ def signupuser(request):
                         'error': 'Неверный/Не проверенный email'
                     }
                     return render(request, 'todo/signupuser.html', context=context)
-
                 except SMTPDataError:
                     context = {
                         'email': user.email,
                         'error': 'Неверный/Не проверенный email'
                     }
                     return render(request, 'todo/signupuser.html', context=context)
-                # user.save()  # сохранения пользователя в бд
-                # login(request, user)  # вход в свой профиль
-                return redirect('currenttodos')
+                return redirect('profile')
             except IntegrityError:
                 context = {
                     'form': UserCreationForm(),
-                    # 'nameLen':len(request.POST['password1']),
                     'err': 'Имя пользователя уже используется',
-                    # 'err2':'Cлишком короткий пароль',
-                    # 'err3': 'Используйте только англ алфавит',
                 }
                 return render(request, 'todo/signupuser.html', context)
             except ValueError:
@@ -80,7 +68,6 @@ def signupuser(request):
                 }
                 return render(request, 'todo/signupuser.html', context)
         else:
-            # Tell the user the passwords didn't match
             context = {
                 'form': UserCreationForm(),
                 'err': 'Пароли не совпадают'
@@ -88,24 +75,19 @@ def signupuser(request):
             return render(request, 'todo/signupuser.html', context)
 
 
-def logoutuser(request):
+def logout_user(request: HttpRequest):
     if request.method == 'POST':
-        print('сработал logoutuser ', request)
         logout(request)
         return redirect('blog:all_blogs')
 
 
-def loginuser(request):
+def login_user(request: HttpRequest):
     if request.method == 'GET':
         context = {
             'form': AuthenticationForm(),
         }
         return render(request, 'todo/login.html', context)
     else:
-        # print(User.objects)
-        # print('request.POST = ', request.POST)
-        # print('',request.POST.get('username'))
-        # print('',request.POST.get('password'))
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
@@ -117,17 +99,12 @@ def loginuser(request):
             return render(request, 'todo/login.html', context)
         else:
             login(request, user)  # вход в свой профиль
-            return redirect('currenttodos')
+            return redirect('profile')
 
 
-def currenttodos(request):
+def profile(request: HttpRequest):
     todos = Todo.objects.filter(user=request.user)
     info = InfoUser.objects.filter(user=request.user)
-    if len(info) > 1:
-        print(info[0].delete())
-    # info=info[len(info)-1]
-    # print(info)
-    print(f'request.user = {request.user}')
     request.session['count'] = todos.count()
     request.session['count_important'] = Todo.objects.filter(user=request.user, is_important=True).count()
     context = {
@@ -137,7 +114,7 @@ def currenttodos(request):
     return render(request, 'todo/profile.html', context=context)
 
 
-def isImportantViews(request):
+def is_important_view(request: HttpRequest):
     todos = Todo.objects.filter(user=request.user)
     request.session['count_important'] = Todo.objects.filter(user=request.user, is_important=True).count()
     context = {
@@ -146,11 +123,11 @@ def isImportantViews(request):
     return render(request, 'todo/isImportant.html', context=context)
 
 
-def gameviews(request):
+def game_views(request: HttpRequest):
     return render(request, 'todo/game.html')
 
 
-def createtodo(request):
+def create_todo(request: HttpRequest):
     if request.method == 'GET':
         context = {
             'form': TodoForm()
@@ -162,7 +139,6 @@ def createtodo(request):
             new_todo = form.save(commit=False)  # сохраняет все данные в БД
             new_todo.user = request.user
             new_todo.save()
-            # request.session['count'] = Todo.objects.filter(user=request.user)
             return redirect('todos')
         except ValueError:
             context = {
@@ -172,7 +148,7 @@ def createtodo(request):
             return render(request, 'todo/createtodo.html', context)
 
 
-def viewtodo(request, todo_id):
+def view_todo(request: HttpRequest, todo_id: int):
     todo = get_object_or_404(Todo, pk=todo_id)
     if request.method == 'GET':
         form = TodoForm(instance=todo)
@@ -194,24 +170,22 @@ def viewtodo(request, todo_id):
             return render(request, 'todo/viewtodo.html', context)
 
 
-def completetodo(request, todo_id):
+def complete_todo(request: HttpRequest, todo_id: int):
     todo = get_object_or_404(Todo, pk=todo_id)
     if request.method == 'POST':
         todo.datecompleted = timezone.now()
         todo.save()
         return redirect('todos')
-        # return render(request, 'todo/todos.html', {'complete': 'выполнено'})
-        # return redirect('todos')
 
 
-def deletetodo(request, todo_id):
+def delete_todo(request: HttpRequest, todo_id: int):
     todo = get_object_or_404(Todo, pk=todo_id)
     if request.method == 'POST':
         todo.delete()
     return redirect('todos')
 
 
-def showTodo(request):
+def show_todo(request: HttpRequest):
     todos = Todo.objects.filter(user=request.user)
     form = TodoForm()
     request.session['count'] = todos.count()
@@ -224,7 +198,7 @@ def showTodo(request):
     return render(request, 'todo/todos.html', context=context)
 
 
-def infoviews(request):
+def info_views(request: HttpRequest):
     if request.method == 'GET':
         context = {
             'info': InfoForm()
@@ -236,8 +210,7 @@ def infoviews(request):
             new_info = form.save(commit=False)
             new_info.user = request.user
             new_info.save()
-            # print(new_info)
-            return redirect('currenttodos')
+            return redirect('profile')
         except ValueError:
             context = {
                 'info': InfoForm,
@@ -249,5 +222,5 @@ def infoviews(request):
 'https://docs.djangoproject.com/en/4.0/topics/auth/default/#django.contrib.auth.login'
 
 
-def handler_not_found(request, exception):
+def handler_not_found(request: HttpRequest, exception: str):
     return render(request, 'todo/404.html', status=404)

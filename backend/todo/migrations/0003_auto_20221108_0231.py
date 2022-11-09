@@ -5,7 +5,6 @@ import django.utils.timezone
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('todo', '0002_auto_20221104_1514'),
     ]
@@ -24,6 +23,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='todo',
             name='datecompleted',
-            field=models.DateTimeField(blank=True, default=django.utils.timezone.now, null=True, verbose_name='Дата дедлайна'),
+            field=models.DateTimeField(blank=True, default=django.utils.timezone.now, null=True,
+                                       verbose_name='Дата дедлайна'),
         ),
     ]

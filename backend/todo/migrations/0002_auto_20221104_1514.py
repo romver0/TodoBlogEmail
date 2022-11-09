@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('todo', '0001_initial'),
     ]
@@ -19,7 +18,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='todo',
             name='datecompleted',
-            field=models.DateTimeField(blank=True, default=datetime.datetime.now, null=True, verbose_name='Дата дедлайна'),
+            field=models.DateTimeField(blank=True, default=datetime.datetime.now, null=True,
+                                       verbose_name='Дата дедлайна'),
         ),
         migrations.AlterField(
             model_name='todo',

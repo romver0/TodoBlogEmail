@@ -7,7 +7,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -33,7 +32,8 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('сity', models.CharField(max_length=100)),
                 ('social_network', models.URLField(verbose_name='Wesite')),
-                ('phonenumber', models.CharField(blank=True, max_length=16, unique=True, validators=[django.core.validators.RegexValidator(regex='^\\+?1?\\d{8,15}$')])),
+                ('phonenumber', models.CharField(blank=True, max_length=16, unique=True, validators=[
+                    django.core.validators.RegexValidator(regex='^\\+?1?\\d{8,15}$')])),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
