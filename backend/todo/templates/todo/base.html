@@ -97,7 +97,7 @@
             <a class="navbar-brand" href="{% url 'blog:all_blogs' %}">
                 <label id="connection">
                     <img id="connection" src="https://cdn-icons-png.flaticon.com/512/7118/7118339.png" width="30" height="30" class="d-inline-block align-top" alt="logo">
-                    <span id="header">Primer</span>
+                    <span id="header">Task Planner</span>
     {#                <a class="nav-link pressing" href="">#}
     {#                <img src="{% static 'portfolio/icon-music.png' %}" width="30" height="30">#}
     {#                </a>#}
@@ -113,17 +113,23 @@
                     <a class="nav-link" href="/blog">Блог</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'is_important' %}" id="is_important">Срочные дела{{request.session.count_important}}</a>
+                  <a class="nav-link" href="{% url 'is_important' %}" id="is_important">Срочные дела({{request.session.count_important}})</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle pressing" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Тудушка{{request.session.count}}</a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{% url 'addTodo' %}"><img src="https://pngimg.com/uploads/autumn_leaves/autumn_leaves_PNG3611.png" alt="create" width="25" height="25"> Создание</a></li>
-                        <li><a class="dropdown-item" href="{% url 'todos' %}"><img src="https://pngimg.com/uploads/autumn_leaves/autumn_leaves_PNG3610.png" alt="create" width="25" height="25"> Мои тудушки</a></li>
-                    </ul>
-                </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="{% url 'addTodo' %}">Создать задачу</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="{% url 'todos' %}">Мои задачи({{request.session.count}})</a>
+                  </li>
+<!--                <li class="nav-item dropdown">-->
+<!--                    <a class="nav-link dropdown-toggle pressing" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Мои задачи({{request.session.count}})</a>-->
+<!--                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">-->
+<!--                        <li><a class="dropdown-item" href="{% url 'addTodo' %}"><img src="https://pngimg.com/uploads/autumn_leaves/autumn_leaves_PNG3611.png" alt="create" width="25" height="25"> Создание</a></li>-->
+<!--                        <li><a class="dropdown-item" href="{% url 'todos' %}"><img src="https://pngimg.com/uploads/autumn_leaves/autumn_leaves_PNG3610.png" alt="create" width="25" height="25"> Мои тудушки</a></li>-->
+<!--                    </ul>-->
+<!--                </li>-->
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'game' %}">Игруха</a>
+                  <a class="nav-link" href="{% url 'game' %}">Игра</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="{% url 'profile' %}">Профиль</a>

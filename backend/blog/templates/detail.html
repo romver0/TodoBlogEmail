@@ -12,5 +12,7 @@
         }
     </style>
     Тема: {{ blog.title }}<br><hr>
+    {% autoescape off %}
     {{ blog.description }}
+    {% endautoescape %}
 {% endblock %}
